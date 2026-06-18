@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python Quiz</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body{
+    background:#eef2f7;
+}
+
+.quiz-container{
+    max-width:1200px;
+    margin:40px auto;
+}
+
+.card{
+    border:none;
+    border-radius:20px;
+}
+
+.option{
+    border:1px solid #ccc;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:12px;
+    cursor:pointer;
+}
+
+.option:hover{
+    background:#f8f9fa;
+}
+
+.question-card{
+    display:none;
+}
+
+.question-card.active{
+    display:block;
+}
+</style>
+</head>
+<body>
+
+<div class="container quiz-container">
+
+<div class="card shadow-lg">
+<div class="card-body p-4">
+
+<h2 class="text-primary fw-bold mb-4">Quick Quiz</h2>
+
+<form id="quizForm">
+
+<!-- Q1 -->
+<div class="question-card active">
+
+<h4>Who developed Python?</h4>
+
+<label class="option d-block">
+<input type="radio" name="q1" value="a">
+James Gosling
+</label>
+
+<label class="option d-block">
+<input type="radio" name="q1" value="b">
+Guido van Rossum
+</label>
+
+<label class="option d-block">
+<input type="radio" name="q1" value="c">
+Dennis Ritchie
+</label>
+
+<button type="button" class="btn btn-primary mt-2 nextBtn">
+Next
+</button>
+
+</div>
+
+<!-- Q2 -->
+<div class="question-card">
+
+<h4>Which symbol is used for comments in Python?</h4>
+
+<label class="option d-block">
+<input type="radio" name="q2" value="a">
+// 
+</label>
+
+<label class="option d-block">
+<input type="radio" name="q2" value="b">
+#
+</label>
+
+<label class="option d-block">
+<input type="radio" name="q2" value="c">
+/* */
+</label>
+
+<button type="button" class="btn btn-primary mt-2 nextBtn">
+Next
+</button>
+
+</div>
+
+<!-- Q3 -->
+<div class="question-card">
+
+<h4>Which of the following is an immutable data type?</h4>
+
+<label class="option d-block">
+<input type="radio" name="q3" value="a">
+List
+</label>
+
+<label class="option d-block">
+<input type="radio" name="q3" value="b">
+Dictionary
+</label>
+
+<label class="option d-block">
+<input type="radio" name="q3" value="c">
+Tuple
+</label>
+
+<button type="button" class="btn btn-primary mt-2 nextBtn">
+Next
+</button>
+
+</div>
+
+<!-- Q4 -->
+<div class="question-card">
+
+<h4>Which keyword is used to define a function in Python?</h4>
+
+<label class="option d-block">
+<input type="radio" name="q4" value="a">
+function
+</label>
+
+<label class="option d-block">
+<input type="radio" name="q4" value="b">
+define
+</label>
+
+<label class="option d-block">
+<input type="radio" name="q4" value="c">
+def
+</label>
+
+<button type="button" class="btn btn-primary mt-2 nextBtn">
+Next
+</button>
+
+</div>
+
+<!-- Q5 -->
+<div class="question-card">
+
+<h4>React JS uses _____ to build user interfaces.</h4>
+
+<label class="option d-block">
+<input type="radio" name="q5" value="a">
+Classes Only
+</label>
+
+<label class="option d-block">
+<input type="radio" name="q5" value="b">
+Components
+</label>
+
+<label class="option d-block">
+<input type="radio" name="q5" value="c">
+Databases
+</label>
+
+<button type="button" class="btn btn-success mt-2" onclick="submitQuiz()">
+Submit
+</button>
+
+</div>
+
+</form>
+
+<div id="result" class="mt-4"></div>
+
+</div>
+</div>
+</div>
+
+<script>
+
+let current=0;
+const questions=document.querySelectorAll(".question-card");
+
+document.querySelectorAll(".nextBtn").forEach(btn=>{
+btn.addEventListener("click",()=>{
+
+let radios=questions[current].querySelectorAll('input[type="radio"]');
+let selected=false;
+
+radios.forEach(r=>{
+if(r.checked) selected=true;
+});
+
+if(!selected){
+alert("Please select an answer");
+return;
+}
+
+questions[current].classList.remove("active");
+current++;
+questions[current].classList.add("active");
+
+});
+});
+
+function submitQuiz(){
+
+const answers={
+q1:"b",
+q2:"b",
+q3:"c",
+q4:"c",
+q5:"b"
+};
+
+const correctText={
+q1:"Guido van Rossum",
+q2:"#",
+q3:"Tuple",
+q4:"def",
+q5:"Components"
+};
+
+let score=0;
+let result="<h3>Quiz Result</h3>";
+
+for(let q in answers){
+
+let selected=document.querySelector(`input[name="${q}"]:checked`);
+
+if(selected && selected.value===answers[q]){
+score++;
+result+=`
+<div class='alert alert-success'>
+✔ ${q.toUpperCase()} Correct
+</div>`;
+}
+else{
+result+=`
+<div class='alert alert-danger'>
+✘ ${q.toUpperCase()} Wrong<br>
+Correct Answer: <b>${correctText[q]}</b>
+</div>`;
+}
+}
+
+result+=`
+<div class="alert alert-info">
+<h4>Score: ${score}/5</h4>
+<h4>Percentage: ${(score/5)*100}%</h4>
+</div>`;
+
+document.getElementById("result").innerHTML=result;
+
+document.getElementById("quizForm").style.display="none";
+}
+
+</script>
+
+</body>
+</html>
